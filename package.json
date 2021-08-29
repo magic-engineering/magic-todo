@@ -1,0 +1,24 @@
+{
+  "name": "magical-todo",
+  "version": "1.0.0",
+  "description": "a magical todo app",
+  "main": "bin/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "neil molina",
+  "license": "ISC",
+  "bin": {
+    "magic": "./bin/index.js"
+  },
+  "dependencies": {
+    "boxen": "4.0",
+    "chalk": "2.4",
+    "lowdb": "^2.1.0",
+    "yargs": "17.1.1"
+  },
+  "type": "module",
+  "devDependencies": {
+    "jest": "^27.1.0"
+  }
+}

@@ -1,24 +1,50 @@
-import jest from "jest-mock";
-import * as cli from "../cli";
-
-const helpers = new jest.ModuleMocker("yargs/helpers", () => {
+jest.mock("yargs/helpers", () => {
   return {
     hideBin: jest.fn(),
   }
 });
 
-const yargs = new jest.ModuleMocker("yargs", () => {
+jest.mock("yargs", () => {
   const mockModuleYargs = {
     command: jest.fn(),
+    argv: 'test',
   }
-  return () => {
-    return mockModuleYargs;
+
+  mockModuleYargs.command.mockReturnValue(mockModuleYargs);
+  return jest.fn()
+    .mockReturnValue(mockModuleYargs);
+});
+
+jest.mock("../db", () => {
+  return {
+    JSON: jest.fn(),
+    sync: jest.fn(),
   }
 });
 
+const cli = require("../cli");
+const db = require("../db");
+const helpers = require("yargs/helpers");
+const yargs = require("yargs");
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 test("should initialize yargs correctly", () => {
-  cli.runCli();
+  process.argv.push(...['todos','ls']);
+  
+  helpers.hideBin.mockReturnValue([
+    "todos",
+    "ls",
+  ]);
+
+  cli();
+  expect(yargs).toHaveBeenCalledWith([
+    "todos",
+    "ls",
+  ]);
+  expect(helpers.hideBin).toHaveBeenCalledWith(process.argv);
 });
 
 test("should configure yargs correctly", () => {
@@ -39,4 +65,33 @@ test("should configure yargs correctly", () => {
     describe: 'action requirement',
     default: ''
   });
+});
+
+test("should execute list of todos", async () => {
+  const consoleSpy = jest.spyOn(console, "log");
+  const todos = [
+    "todo1",
+    "todo2",
+  ]
+  db.JSON.mockResolvedValueOnce({ todos });
+
+  await cli.processArgs({ action: "ls" });
+
+  expect(consoleSpy).toHaveBeenCalledWith("0: todo1");
+  expect(consoleSpy).toHaveBeenCalledWith("1: todo2");
+});
+
+test("should add todo", async () => {
+  const todos = [
+    "todo a",
+  ];
+  db.JSON.mockResolvedValueOnce({ todos });
+
+  await cli.processArgs({ action: "add", actionArg: "new todo" });
+
+  expect(db.JSON).toHaveBeenCalledWith({ todos: [
+    "todo a",
+    "new todo",
+  ]});
+  expect(db.sync).toHaveBeenCalled();
 });

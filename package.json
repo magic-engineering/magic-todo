@@ -15,9 +15,10 @@
     "boxen": "4.0",
     "chalk": "2.4",
     "lowdb": "^2.1.0",
+    "simple-json-db": "^1.2.3",
     "yargs": "17.1.1"
   },
-  "type": "module",
+  "type": "commonjs",
   "devDependencies": {
     "jest": "^27.1.0"
   }

@@ -1,9 +1,8 @@
-import yargs from "yargs";
-import * as helpers from "yargs/helpers";
+const yargs = require("yargs");
+const helpers = require("yargs/helpers");
+const db = require("./db");
 
-import db from "./db";
-
-export const yargsConfiguration = (yargs) => {
+const yargsConfiguration = (yargs) => {
   return yargs
     .positional('action', {
       describe: 'action',
@@ -15,32 +14,40 @@ export const yargsConfiguration = (yargs) => {
     });
 }
 
+const processArgs = async (args) => {
+  const data = await db.JSON();
+  if (args.action == 'add') {
+    const { todos = [] } = data;
+    const nextIndex = todos.length;
+    console.log(`adding ${nextIndex}:${args.actionArg} in todos.`);
+    todos.push(args.actionArg);
+    db.JSON({ todos });
+    await db.sync();
+  } else {
+    console.log('TODOS:');
+    const { todos = [] } = data;
+    todos.forEach((todo, i) => {
+      console.log(`${i}: ${todo}`);
+    });
+    if (!todos.length) {
+      console.log('no todos yet');
+    }
+  }
+}
+
 const description = `- manage todos`;
-export function runCli() {
-  yargs(helpers.hideBin(process.argv))
+function runCli() {
+  const cleanArgs = helpers.hideBin(process.argv);
+  yargs(cleanArgs)
     .command(
       'todos [action] [actionArg]', 
       description, 
       yargsConfiguration, 
-      async (args) => {
-        await db.read();
-        if (args.action == 'add') {
-          const nextIndex = db.data.todos.length;
-          console.log(`adding ${nextIndex}:${args.actionArg} in todos.`);
-          db.data.todos.push(args.actionArg);
-          db.write();
-        } else {
-          console.log('TODOS:');
-          db.data.todos.forEach((todo, i) => {
-            console.log(`${i}: ${todo}`);
-          });
-          if (!db.data.todos.length) {
-            console.log('no todos yet');
-          }
-        }
-      }
+      processArgs
     )
     .argv;
 }
 
-export default runCli;
+module.exports = runCli;
+module.exports.yargsConfiguration = yargsConfiguration;
+module.exports.processArgs = processArgs;

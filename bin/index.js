@@ -1,4 +1,3 @@
-#!/usr/bin/env node --experimental-modules --es-module-specifier-resolution=node
-import cli from "./cli.js";
-
+#!/usr/bin/env node
+const cli = require("./cli");
 cli();

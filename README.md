@@ -1,6 +1,6 @@
 # Magical Todo
 
-A simple application we're written for a code review assessment that is part of our hiring process at Magic.
+A simple application we've written for a code review assessment that is part of our hiring process at Magic.
 
 ## To Setup
 

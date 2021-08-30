@@ -20,9 +20,24 @@ The application (when finished) will be a simple CLI (command line interface) to
 
 There are tests (written in Jest).
 
-## How to Use
+## How to use
 
-A [pending pull request](https://github.com/magic-engineering/todo-cli/pull/1) updates the README to explain how to use the application.
+1. list all todos
+```
+$ magic todos ls
+```
+returns
+```
+TODOS:
+ID1: cook food
+ID2: clean
+ID3: save the world
+```
+
+2. add todo
+```
+$ magic todos add ToDoItem
+```
 
 ## The Pull Request
 

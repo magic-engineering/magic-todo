@@ -36,13 +36,15 @@ Your task is to review the pull request and perform a code review.
 
 You can review the code in advance of our meeting and make comments using GitHub. If you don't have time to prepare, you can wait until we meet to make suggestions.
 
+You'll find a few simple errors. But like a real code review, you'll also notice things that are matters of good judgment.
+
 We are interested in the following:
 
 - your suggestions to improve the code
 - your process of reviewing code
 - how you communicate as a reviewer
 
-Assume that the pull request was created by an *inexperienced* JavaScript developer. You should look for problems with:
+Assume that the pull request was created by an *inexperienced* JavaScript developer who was in a hurry to meet a deadline. You should look for problems with:
 
 - basic JavaScript knowledge that a beginner should know
 - good programming practices that an experienced developer should follow

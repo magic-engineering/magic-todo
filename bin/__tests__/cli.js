@@ -95,3 +95,15 @@ test("should add todo", async () => {
   ]});
   expect(db.sync).toHaveBeenCalled();
 });
+
+test("remove todo item", async () => {
+  const todos = [
+    "todo a",
+  ];
+  db.JSON.mockResolvedValueOnce({ todos });
+
+  await cli.processArgs({ action: "close", actionArg: "0" });
+
+  expect(db.JSON).toHaveBeenCalledWith({ todos:[] });
+  expect(db.sync).toHaveBeenCalled();
+});

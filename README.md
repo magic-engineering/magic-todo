@@ -39,6 +39,11 @@ ID3: save the world
 $ magic todos add ToDoItem
 ```
 
+3. remove todo
+```
+$ magic todos rm 0
+```
+
 ## The Pull Request
 
 The application is not complete. Previous commits have set up a basic structure and dependencies for the application.
